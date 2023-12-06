@@ -6,7 +6,9 @@ var login= express.Router(); login.use(cors());
 
 
 
-var connectionstring="mongodb+srv://swathi:database1@cluster0.aguofmt.mongodb.net/shopping1?retryWrites=true&w=majority";
+/*var connectionstring="mongodb+srv://swathi:database1@cluster0.aguofmt.mongodb.net/shopping1?retryWrites=true&w=majority";*/
+var connectionstring = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/shopping1?retryWrites=true&w=majority`;
+
 
 login.get("/userlogindetails",(req,res)=>{
 
