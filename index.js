@@ -1,6 +1,10 @@
 var express=require("express");
 var cors=require("cors");
 
+// In your server file (e.g., app.js)
+require('dotenv').config();
+
+
 const productsRoute= require("./cloudshopdata");
 const loginRoute=require("./userlogins");
 //const imagesRoute=require("../../etcc/imagedata");
