@@ -50,28 +50,27 @@ router.get("/kids",(req,res)=>{
 })
 
 router.use('/images/women', express.static('./database1/women cloth/'));
-router.get("/women",(req,res)=>{
-    mongoclient.connect(connectionstring).then(clientObj=>{
-        var database=clientObj.db("shopping1");
-        database.collection("cloths").find({category:"women"}).toArray() .then(doc=>{
-           /* res.send(doc);*/
 
-          
-              res.json(womenimages);
 
-              const womenimages = doc.map(item => {
-                if (item.image) {
-                    item.image = `/images/women/${path.basename(item.image)}`;
-                }
-                return item;
-            });
-            
-            res.json(womenimages);
-            
-          
-        })
-    })
-})
+router.get("/women", async (req, res) => {
+    try {
+        const client = await mongoclient.connect(connectionstring);
+        const database = client.db("shopping1");
+        const doc = await database.collection("cloths").find({ category: "women" }).toArray();
+
+        const modifiedDoc = doc.map(item => {
+            if (item.image) {
+                item.image = `/images/women/${path.basename(item.image)}`;
+            }
+            return item;
+        });
+
+        res.json(modifiedDoc);
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 router.get("/men",(req,res)=>{
     mongoclient.connect(connectionstring).then(clientObj=>{
