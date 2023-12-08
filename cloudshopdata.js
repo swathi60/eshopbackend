@@ -4,6 +4,7 @@ var router=express.Router();
 var mongoclient=require("mongodb").MongoClient;
 
 require('dotenv').config();
+const path = require('path'); 
 
 //var connectionstring="mongodb+srv://swathi:database1@cluster0.aguofmt.mongodb.net/shopping1?retryWrites=true&w=majority";
 var connectionstring = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/shopping1?retryWrites=true&w=majority`;
@@ -58,7 +59,7 @@ router.get("/women",(req,res)=>{
             const womenimages = doc.map(item => {
                 if (item.image) {
                   // Construct the image URL
-                  item.image = `/images/${path.basename(item.image)}`;
+                  item.image = `/images/women${path.basename(item.image)}`;
                 }
                 return item;
               });
