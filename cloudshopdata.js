@@ -25,6 +25,8 @@ router.get("/",(req,res)=>{
     })
 })
 
+
+
 router.get("/all",(req,res)=>{
     mongoclient.connect(connectionstring).then((clientObj)=>{
         var database=clientObj.db("shopping1");
@@ -35,6 +37,7 @@ router.get("/all",(req,res)=>{
 
 })
 
+router.use('/images/baby', express.static('./database1/baby cloth/'));
 router.get("/kids",(req,res)=>{
     mongoclient.connect(connectionstring).then((clientObj)=>{
        
@@ -45,11 +48,23 @@ router.get("/kids",(req,res)=>{
     })
 })
 
+router.use('/images/women', express.static('./database1/women cloth/'));
 router.get("/women",(req,res)=>{
     mongoclient.connect(connectionstring).then(clientObj=>{
         var database=clientObj.db("shopping1");
-        database.collection("cloths").find({category:"women"}).toArray().then(doc=>{
-            res.send(doc);
+        database.collection("cloths").find({category:"women"}).toArray() .then(doc=>{
+           /* res.send(doc);*/
+
+            const womenimages = doc.map(item => {
+                if (item.image) {
+                  // Construct the image URL
+                  item.image = `/images/${path.basename(item.image)}`;
+                }
+                return item;
+              });
+          
+              res.json(womenimages);
+          
         })
     })
 })
