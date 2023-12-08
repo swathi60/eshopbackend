@@ -56,15 +56,18 @@ router.get("/women",(req,res)=>{
         database.collection("cloths").find({category:"women"}).toArray() .then(doc=>{
            /* res.send(doc);*/
 
-            const womenimages = doc.map(item => {
-                if (item.image) {
-                  // Construct the image URL
-                  item.image = `/images/women${path.basename(item.image)}`;
-                }
-                return item;
-              });
           
               res.json(womenimages);
+
+              const womenimages = doc.map(item => {
+                if (item.image) {
+                    item.image = `/images/women/${path.basename(item.image)}`;
+                }
+                return item;
+            });
+            
+            res.json(womenimages);
+            
           
         })
     })
